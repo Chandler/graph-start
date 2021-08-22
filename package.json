@@ -9,7 +9,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "color-blend": "^3.0.1",
     "core-js": "^3.12.1",
+    "hex-rgb": "^5.0.0",
+    "hex-to-rgba": "^2.0.1",
     "miserables": "^2.0.0",
     "ngraph.events": "^1.0.0",
     "ngraph.forcelayout": "^3.1.0",
@@ -18,7 +21,8 @@
     "ngraph.generators": "^19.0.0",
     "ngraph.graph": "^19.1.0",
     "vue": "^2.6.12",
-    "w-gl": "^0.19.0"
+    "w-gl": "^0.19.0",
+    "watch": "^1.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

@@ -59,7 +59,7 @@ export default {
 }
 
 a {
-  color: rgb(244, 244, 244);
+  color: rgb(163, 106, 255);
   text-decoration: none;
   text-align: center;
   padding: 0 4px

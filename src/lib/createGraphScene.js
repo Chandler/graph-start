@@ -5,6 +5,35 @@ import bus from './bus';
 import getGraph from './getGraph';
 import createLayout from 'ngraph.forcelayout';
 
+import { normal } from 'color-blend'
+import hexRgb from 'hex-rgb';
+
+function mixUint32Color(c0, c1) {
+    return c0
+}
+
+function createPositionLayout(graph, data) {
+  let api = {
+    step: function(){},
+    getLinkColor: function(toId, fromId){
+      let toData = graph.getNode(toId).data
+      let fromData = graph.getNode(fromId).data
+      let linkColor = mixUint32Color(fromData.color, toData.color)
+      return linkColor
+    },
+    getNodePosition: function (nodeId) {
+      let data = graph.getNode(nodeId).data
+      let pos = {
+        x: data.x,
+        y: data.y,
+        z: 0
+      }
+      return pos
+    }
+  }
+  return api
+}
+
 export default function createGraphScene(canvas) {
   let drawLinks = true;
 
@@ -33,7 +62,7 @@ export default function createGraphScene(canvas) {
     scene = initScene();
     graph = newGraph
 
-    layout = createLayout(graph, {
+    layout = createPositionLayout(graph, {
       timeStep: 0.5,
       springLength: 10,
       springCoefficient: 0.8,
@@ -53,7 +82,7 @@ export default function createGraphScene(canvas) {
 
   function initScene() {
     let scene = createScene(canvas);
-    scene.setClearColor(12/255, 41/255, 82/255, 1)
+    scene.setClearColor(255, 255, 255, 1)
     let initialSceneSize = 40;
     scene.setViewBox({
       left:  -initialSceneSize,
@@ -71,7 +100,7 @@ export default function createGraphScene(canvas) {
 
     graph.forEachNode(node => {
       var point = layout.getNodePosition(node.id);
-      let size = 1;
+      let size = 0.1;
       if (node.data && node.data.size) {
         size = node.data.size;
       } else {
@@ -87,7 +116,8 @@ export default function createGraphScene(canvas) {
     graph.forEachLink(link => {
       var from = layout.getNodePosition(link.fromId);
       var to = layout.getNodePosition(link.toId);
-      var line = { from: [from.x, from.y, from.z || 0], to: [to.x, to.y, to.z || 0], color: 0xFFFFFF10 };
+      var linkcolor = layout.getLinkColor(link.fromId, link.toId)
+      var line = { from: [from.x, from.y, from.z || 0], to: [to.x, to.y, to.z || 0], color: linkcolor || 0xb7c0c9FF };
       link.ui = line;
       link.uiId = lines.add(link.ui);
     });
